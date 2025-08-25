@@ -1,0 +1,92 @@
+---
+import "../styles/global.css";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Page Not Found - PandaScan Converter</title>
+		<meta name="description" content="Page not found. Redirecting to PandaScan Converter homepage." />
+		<script>
+			// Redirigir automáticamente a la página principal después de 3 segundos
+			setTimeout(() => {
+				window.location.href = '/';
+			}, 3000);
+		</script>
+	</head>
+	<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+		<div class="text-center space-y-6 p-8">
+			<!-- Logo y branding -->
+			<div class="flex items-center justify-center space-x-4 mb-8">
+				<div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
+					<img src="/logo.webp" alt="PandaScan Logo" class="w-12 h-12" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+					<div class="w-8 h-8 text-white font-bold text-2xl hidden items-center justify-center">🐼</div>
+				</div>
+				<div>
+					<h1 class="text-3xl font-bold tracking-tight bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+						PandaScan Converter
+					</h1>
+					<p class="text-sm text-muted-foreground">powered by iscodev</p>
+				</div>
+			</div>
+
+			<!-- Mensaje de error 404 -->
+			<div class="space-y-4">
+				<h2 class="text-6xl font-bold text-gray-300">404</h2>
+				<h3 class="text-2xl font-semibold text-gray-700">Page Not Found</h3>
+				<p class="text-gray-600 max-w-md mx-auto">
+					The page you're looking for doesn't exist. You'll be redirected to the homepage automatically.
+				</p>
+			</div>
+
+			<!-- Contador de redirección -->
+			<div class="space-y-4">
+				<div class="flex items-center justify-center space-x-2 text-gray-500">
+					<svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+					</svg>
+					<span>Redirecting in <span id="countdown">3</span> seconds...</span>
+				</div>
+				
+				<!-- Botón manual de redirección -->
+				<div class="pt-4">
+					<a 
+						href="/" 
+						class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
+					>
+						<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5v6m8-6v6" />
+						</svg>
+						Go to PandaScan Converter
+					</a>
+				</div>
+			</div>
+
+			<!-- Información adicional -->
+			<div class="pt-8 text-sm text-gray-500">
+				<p>Transform your images into professional PDFs</p>
+				<p class="mt-1">Perfect for comics, documents, and photo collections</p>
+			</div>
+		</div>
+
+		<script>
+			// Contador regresivo visual
+			let countdown = 3;
+			const countdownElement = document.getElementById('countdown');
+			
+			const timer = setInterval(() => {
+				countdown--;
+				if (countdownElement) {
+					countdownElement.textContent = countdown.toString();
+				}
+				if (countdown <= 0) {
+					clearInterval(timer);
+				}
+			}, 1000);
+		</script>
+	</body>
+</html>

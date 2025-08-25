@@ -7,4 +7,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  // Configuración para manejo de rutas 404
+  trailingSlash: "never",
+  build: {
+    format: "directory"
+  }
 });

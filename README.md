@@ -53,6 +53,25 @@ bun install && bun run dev
 
 **Perfecto para**: Cómics, documentos, colecciones de fotos
 
+## 🚀 Default Configuration
+
+- **Style**: Comic mode (no spaces between images)
+- **Quality**: Standard (SD) for lighter files
+- **Watermark**: Always enabled (PandaScan Converter)
+- **Image info**: Disabled by default
+- **Page numbers**: Enabled by default
+
+## 🔧 Error Handling
+
+- **404 Pages**: Automatic redirect to main page
+- **Corrupt images**: Automatically filtered
+- **Load errors**: Automatic retries with visual feedback
+- **Compatibility**: Works on all modern browsers
+3. Configura ajustes (calidad, estilo cómic, etc.)
+4. Descarga tu PDF profesional
+
+**Perfecto para**: Cómics, documentos, colecciones de fotos
+
 ## ⚙️ Settings
 
 | Feature | Options |
