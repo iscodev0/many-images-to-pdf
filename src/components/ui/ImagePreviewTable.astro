@@ -1,0 +1,53 @@
+---
+import Card from './Card.astro';
+import { Image as ImageIcon } from 'lucide-astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<Card class="p-8">
+  <div class="space-y-6">
+    <div class="flex items-center justify-between">
+      <h2 class="text-2xl font-semibold flex items-center space-x-2">
+        <ImageIcon class="w-6 h-6 text-primary" />
+        <span>Images Preview</span>
+      </h2>
+      <div id="image-count" class="text-sm text-muted-foreground">
+        0 images
+      </div>
+    </div>
+    
+    <div class="relative w-full overflow-hidden rounded-lg border">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="border-b bg-muted/50">
+            <tr>
+              <th class="text-left p-4 font-medium text-sm w-16">#</th>
+              <th class="text-left p-4 font-medium text-sm w-20">Preview</th>
+              <th class="text-left p-4 font-medium text-sm">Name</th>
+              <th class="text-left p-4 font-medium text-sm w-24">Size</th>
+              <th class="text-left p-4 font-medium text-sm w-20">Quality</th>
+              <th class="text-left p-4 font-medium text-sm w-20">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="images-tbody" class="divide-y">
+            <!-- Dynamic content will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="empty-state" class="text-center py-16">
+        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
+          <ImageIcon class="w-12 h-12 text-muted-foreground" />
+        </div>
+        <h3 class="text-lg font-medium mb-2">No images yet</h3>
+        <p class="text-muted-foreground mb-4">Start by uploading some images or adding URLs</p>
+        <p class="text-sm text-muted-foreground">Drag files here or use the upload section above</p>
+      </div>
+    </div>
+  </div>
+</Card>

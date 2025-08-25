@@ -1,0 +1,90 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<div 
+  class:list={[
+    'border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer bg-background/50 hover:bg-background/80',
+    className
+  ]}
+  id="drop-zone"
+  {...props}
+>
+  <input 
+    type="file" 
+    id="file-upload" 
+    multiple 
+    accept="image/*" 
+    class="hidden"
+  />
+  <div class="flex flex-col items-center justify-center space-y-4">
+    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+      <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+    </div>
+    <div class="space-y-2">
+      <p class="text-sm font-medium">Drop images here or click to browse</p>
+      <p class="text-xs text-muted-foreground">PNG, JPG, JPEG up to 10MB each</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-upload');
+
+    // Make the entire drop zone clickable
+    dropZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop zone when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    dropZone.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight(e) {
+      dropZone.classList.add('border-primary', 'bg-primary/5');
+      dropZone.classList.remove('border-muted-foreground/25');
+    }
+
+    function unhighlight(e) {
+      dropZone.classList.remove('border-primary', 'bg-primary/5');
+      dropZone.classList.add('border-muted-foreground/25');
+    }
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+
+      // Trigger the file input change event with the dropped files
+      fileInput.files = files;
+      const event = new Event('change', { bubbles: true });
+      fileInput.dispatchEvent(event);
+    }
+  });
+</script>

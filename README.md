@@ -1,20 +1,87 @@
-# Astro Starter Kit: Minimal
+# 🐼 PandaScan Converter (Beta)
 
-```sh
-bun create astro@latest -- --template minimal
+**Transform images into professional PDFs instantly** - Perfect for comics, documents, and photo collections.
+
+*powered by iscodev *
+
+![Astro](https://img.shields.io/badge/astro-5.13.3-blue)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-4.1.12-blue)
+![TypeScript](https://img.shields.io/badge/typescript-ready-green)
+
+## ⚡ Quick Start
+
+1. **Upload** images (drag & drop or URLs)
+2. **Reorder** by dragging table rows  
+3. **Configure** quality and comic style
+4. **Download** your professional PDF
+
+**Live Demo**: Visit [pandascan.online](https://pandascan.online) 🚀
+
+## 🎯 Core Features
+
+- 📁 **Multi-Upload**: Drag & drop files + URL support
+- � **Drag Reorder**: Change image order easily
+- 📏 **Smart Quality**: SD/HD with comic-optimized layouts
+- 🎨 **Professional Output**: A4, Letter, Legal, A3, Custom sizes
+- 🔒 **Watermark**: Branded PDFs (always included)
+
+## �️ Tech Stack
+
+**Framework**: Astro 5.13.3 • **UI**: Tailwind + shadcn/ui • **PDF**: jsPDF • **Images**: browser-image-compression
+
+## 🚀 Installation
+
+```bash
+bun install && bun run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 📖 Usage Guide
 
-## 🚀 Project Structure
+### English 🇺🇸
+1. Upload images by dragging files or adding URLs
+2. Reorder by dragging rows in the table  
+3. Configure settings (quality, comic style, etc.)
+4. Download your professional PDF
 
-Inside of your Astro project, you'll see the following folders and files:
+**Perfect for**: Comics, documents, photo collections
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
+### Español 🇪🇸  
+1. Sube imágenes arrastrando archivos o agregando URLs
+2. Reordena arrastrando filas en la tabla
+3. Configura ajustes (calidad, estilo cómic, etc.)
+4. Descarga tu PDF profesional
+
+**Perfecto para**: Cómics, documentos, colecciones de fotos
+
+## ⚙️ Settings
+
+| Feature | Options |
+|---------|---------|
+| **Quality** | SD (optimized) • HD (maximum) |
+| **Page Format** | A4 • Letter • Legal • A3 • Custom |
+| **Comic Style** | Standard • Comic Layout (optimized for reading) |
+## 🏗️ Project Structure
+
+```
+src/
+├── components/
+│   ├── ui/                    # UI components
+│   └── ImageToPDFConverter.astro  # Main app
+├── lib/utils.ts               # Utilities  
+└── pages/index.astro          # Entry point
+```
+
+## 📱 Browser Support
+
+Chrome 88+ • Firefox 85+ • Safari 14+
+
+## 📄 License
+
+MIT License
+
+---
+
+**Made with ❤️ by PandaScan** | Visit [pandascan.online](https://pandascan.online)
 │       └── index.astro
 └── package.json
 ```

@@ -1,0 +1,29 @@
+---
+import Button from './Button.astro';
+import { Settings, RotateCcw, Trash2, Download } from 'lucide-astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-3 justify-center">
+  <Button id="settings-btn" variant="outline" size="lg" class="min-w-[120px]">
+    <Settings class="w-4 h-4 mr-2" />
+    Settings
+  </Button>
+  <Button id="reverse-order-btn" variant="outline" size="lg" class="min-w-[140px]">
+    <RotateCcw class="w-4 h-4 mr-2" />
+    Reverse Order
+  </Button>
+  <Button id="clear-all-btn" variant="destructive" size="lg" class="min-w-[120px]">
+    <Trash2 class="w-4 h-4 mr-2" />
+    Clear All
+  </Button>
+  <Button id="download-pdf-btn" size="lg" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 min-w-[160px]">
+    <Download class="w-4 h-4 mr-2" />
+    Download PDF
+  </Button>
+</div>

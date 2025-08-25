@@ -1,0 +1,38 @@
+---
+import AppHeader from './ui/AppHeader.astro';
+import TutorialSection from './ui/TutorialSection.astro';
+import ImageUploadSection from './ui/ImageUploadSection.astro';
+import ControlButtons from './ui/ControlButtons.astro';
+import ImagePreviewTable from './ui/ImagePreviewTable.astro';
+import SettingsModal from './ui/SettingsModal.astro';
+---
+
+<div class="w-full max-w-7xl mx-auto p-6 space-y-8">
+  <!-- Header -->
+  <AppHeader />
+
+  <!-- Mini Tutorial Section -->
+  <TutorialSection />
+
+  <!-- Upload Section -->
+  <ImageUploadSection />
+
+  <!-- Controls -->
+  <ControlButtons />
+
+  <!-- Images Preview -->
+  <ImagePreviewTable />
+  
+  <!-- Settings Modal -->
+  <SettingsModal />
+</div>
+
+<script>
+  import { ImageManager } from '../utils/imageManager';
+
+  // Initialize the application
+  const imageManager = new ImageManager();
+  
+  // Make it globally accessible for HTML onclick handlers
+  (window as any).imageManager = imageManager;
+</script>

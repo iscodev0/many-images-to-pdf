@@ -1,0 +1,25 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<div class="text-center space-y-4">
+  <div class="flex items-center justify-center space-x-4">
+    <div class="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden">
+      <img src="/logo.webp" alt="PandaScan Logo" class="w-20 h-20" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <!-- <div class="w-8 h-8 text-white font-bold text-2xl hidden items-center justify-center">🐼</div> -->
+    </div>
+    <div>
+      <h1 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-zinc-800 to-blue-600 bg-clip-text text-transparent">
+        PandaScan Converter ( Beta )
+      </h1>
+      <p class="text-sm text-muted-foreground">powered by iscodev </p>
+    </div>
+  </div>
+  <p class="text-xl text-muted-foreground max-w-2xl mx-auto text-center">
+    Transform your images into professional PDFs with our advanced converter. Perfect for comics, documents, and collections.
+  </p>
+</div>

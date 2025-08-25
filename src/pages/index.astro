@@ -1,16 +1,20 @@
 ---
-
+import "../styles/global.css";
+import ImageToPDFConverter from "../components/ImageToPDFConverter.astro";
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>PandaScan Converter - Image to PDF</title>
+		<meta name="description" content="Transform images into professional PDFs with PandaScan Converter. Perfect for comics, documents, and collections." />
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+		<main class="container mx-auto py-8">
+			<ImageToPDFConverter />
+		</main>
 	</body>
 </html>

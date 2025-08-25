@@ -1,0 +1,52 @@
+---
+import Button from './Button.astro';
+import Card from './Card.astro';
+import DropZone from './DropZone.astro';
+import { Upload, Link } from 'lucide-astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<Card class="p-8">
+  <div class="space-y-6">
+    <h2 class="text-2xl font-semibold flex items-center space-x-2">
+      <Upload class="w-6 h-6 text-primary" />
+      <span>Add Images</span>
+    </h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- File Upload -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium">Upload Files</h3>
+        <DropZone />
+        <p class="text-sm text-muted-foreground">
+          Supports: PNG, JPG, JPEG, WebP, GIF
+        </p>
+      </div>
+
+      <!-- URL Input -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-medium">Add from URL</h3>
+        <div class="flex space-x-2">
+          <input
+            type="url"
+            id="url-input"
+            placeholder="https://example.com/image.jpg"
+            class="flex-1 px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+          <Button id="add-url-btn" variant="outline" size="sm">
+            <Link class="w-4 h-4 mr-2" />
+            Add URL
+          </Button>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Paste a direct link to an image file
+        </p>
+      </div>
+    </div>
+  </div>
+</Card>

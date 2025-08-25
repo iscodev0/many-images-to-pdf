@@ -1,0 +1,19 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<div 
+  class:list={[
+    'relative w-full overflow-auto',
+    className
+  ]}
+  {...props}
+>
+  <table class="w-full caption-bottom text-sm">
+    <slot />
+  </table>
+</div>

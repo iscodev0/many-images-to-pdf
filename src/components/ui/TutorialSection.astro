@@ -1,0 +1,41 @@
+---
+import Card from './Card.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<Card class="p-6 bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
+  <div class="space-y-4">
+    <h3 class="text-lg font-semibold text-center">🚀 How to Use / Cómo Usar</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- English Tutorial -->
+      <div class="space-y-3">
+        <h4 class="font-medium text-blue-700">🇺🇸 English</h4>
+        <ol class="text-sm text-muted-foreground space-y-2">
+          <li><strong>1.</strong> Upload images by dragging files or adding URLs</li>
+          <li><strong>2.</strong> Reorder by dragging rows in the table</li>
+          <li><strong>3.</strong> Configure settings (quality, comic style, etc.)</li>
+          <li><strong>4.</strong> Download your professional PDF</li>
+        </ol>
+        <p class="text-xs text-blue-600"><strong>Perfect for:</strong> Comics, documents, photo collections</p>
+      </div>
+      
+      <!-- Spanish Tutorial -->
+      <div class="space-y-3">
+        <h4 class="font-medium text-green-700">🇪🇸 Español</h4>
+        <ol class="text-sm text-muted-foreground space-y-2">
+          <li><strong>1.</strong> Sube imágenes arrastrando archivos o agregando URLs</li>
+          <li><strong>2.</strong> Reordena arrastrando filas en la tabla</li>
+          <li><strong>3.</strong> Configura ajustes (calidad, estilo cómic, etc.)</li>
+          <li><strong>4.</strong> Descarga tu PDF profesional</li>
+        </ol>
+        <p class="text-xs text-green-600"><strong>Perfecto para:</strong> Cómics, documentos, colecciones de fotos</p>
+      </div>
+    </div>
+  </div>
+</Card>

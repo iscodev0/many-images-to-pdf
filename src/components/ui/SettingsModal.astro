@@ -1,0 +1,410 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '', ...props } = Astro.props;
+---
+
+<div 
+  id="settings-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm"
+  {...props}
+>
+  <div class="bg-background rounded-xl border shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div class="p-6 border-b">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold">PDF Settings</h2>
+        <button 
+          id="close-settings"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <div class="p-6 space-y-6">
+      <!-- Page Format -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">Page Format</label>
+        <select 
+          id="page-format"
+          class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <option value="a4">A4 (210 × 297 mm)</option>
+          <option value="letter">Letter (216 × 279 mm)</option>
+          <option value="legal">Legal (216 × 356 mm)</option>
+          <option value="comic" selected>Comic Style (Custom)</option>
+        </select>
+      </div>
+
+      <!-- Comic Style Options -->
+      <div id="comic-options" class="space-y-3">
+        <label class="text-sm font-medium text-primary">Comic Style Settings</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-muted-foreground">Page Width (px)</label>
+            <input 
+              type="number" 
+              id="comic-width"
+              value="480"
+              min="320"
+              max="1080"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-muted-foreground">Page Height (px)</label>
+            <input 
+              type="number" 
+              id="comic-height"
+              value="3000"
+              min="1000"
+              max="5000"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="text-xs text-muted-foreground">Image Quality (0.1 - 1.0)</label>
+          <input 
+            type="number" 
+            id="comic-image-quality"
+            value="0.85"
+            min="0.1"
+            max="1.0"
+            step="0.05"
+            class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          />
+        </div>
+      </div>
+
+      <!-- Orientation -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">Orientation</label>
+        <div class="flex space-x-4">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="orientation" value="portrait" checked class="w-4 h-4 text-primary" />
+            <span class="text-sm">Portrait</span>
+          </label>
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="radio" name="orientation" value="landscape" class="w-4 h-4 text-primary" />
+            <span class="text-sm">Landscape</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Margins -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">Margins (mm)</label>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs text-muted-foreground">Top/Bottom</label>
+            <input 
+              type="number" 
+              id="margin-vertical"
+              value="15"
+              min="5"
+              max="50"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+          </div>
+          <div>
+            <label class="text-xs text-muted-foreground">Left/Right</label>
+            <input 
+              type="number" 
+              id="margin-horizontal"
+              value="15"
+              min="5"
+              max="50"
+              class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Image Spacing -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">Image Spacing (mm)</label>
+        <input 
+          type="range" 
+          id="image-spacing"
+          value="10"
+          min="0"
+          max="30"
+          class="w-full"
+        />
+        <div class="flex justify-between text-xs text-muted-foreground">
+          <span>0mm</span>
+          <span id="spacing-value">10mm</span>
+          <span>30mm</span>
+        </div>
+      </div>
+
+      <!-- Quality Settings -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">Output Quality</label>
+        <div class="grid grid-cols-1 gap-3">
+          <label class="flex items-center space-x-3 cursor-pointer p-3 border rounded-lg hover:bg-muted/30 transition-colors">
+            <input type="radio" name="output-quality" value="sd" class="w-4 h-4 text-primary" />
+            <div class="flex flex-col flex-1">
+              <span class="text-sm font-medium">SD Quality (480px)</span>
+              <span class="text-xs text-muted-foreground">Faster processing, smaller files, good for mobile</span>
+            </div>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer p-3 border rounded-lg hover:bg-muted/30 transition-colors">
+            <input type="radio" name="output-quality" value="hd" checked class="w-4 h-4 text-primary" />
+            <div class="flex flex-col flex-1">
+              <span class="text-sm font-medium">HD Quality (720px)</span>
+              <span class="text-xs text-muted-foreground">High quality, balanced size, recommended</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Image Quality -->
+      <div class="space-y-3">
+        <label class="text-sm font-medium">PDF Compression Quality</label>
+        <select 
+          id="pdf-quality"
+          class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        >
+          <option value="FAST">Fast (Smaller file)</option>
+          <option value="MEDIUM" selected>Medium (Balanced)</option>
+          <option value="SLOW">Slow (Best quality)</option>
+        </select>
+      </div>
+
+      <!-- Watermark Settings -->
+      <div class="space-y-3">
+        <div class="flex items-center space-x-3 p-3 border rounded-lg bg-muted/20">
+          <div class="w-4 h-4 bg-primary rounded flex items-center justify-center">
+            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-medium">Watermark Included</span>
+            <span class="text-xs text-muted-foreground">All PDFs include "Generated with pandascan.online" watermark</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Include Metadata -->
+      <div class="space-y-3">
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input type="checkbox" id="include-metadata" class="w-4 h-4 text-primary rounded focus:ring-2 focus:ring-primary" />
+          <div class="flex flex-col">
+            <span class="text-sm font-medium">Include Image Information</span>
+            <span class="text-xs text-muted-foreground">Add filename and quality below each image</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- Page Numbers -->
+      <div class="space-y-3">
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input type="checkbox" id="include-page-numbers" checked class="w-4 h-4 text-primary rounded focus:ring-2 focus:ring-primary" />
+          <div class="flex flex-col">
+            <span class="text-sm font-medium">Include Page Numbers</span>
+            <span class="text-xs text-muted-foreground">Show page numbers in the footer</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="p-6 border-t bg-muted/30 rounded-b-xl">
+      <div class="flex justify-end space-x-3">
+        <button 
+          id="reset-settings"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+        >
+          Reset to Default
+        </button>
+        <button 
+          id="apply-settings"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        >
+          Apply Settings
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('settings-modal');
+    const closeBtn = document.getElementById('close-settings');
+    const applyBtn = document.getElementById('apply-settings');
+    const resetBtn = document.getElementById('reset-settings');
+    const spacingSlider = document.getElementById('image-spacing');
+    const spacingValue = document.getElementById('spacing-value');
+    const comicOptions = document.getElementById('comic-options');
+
+    // Update spacing value display
+    if (spacingSlider && spacingValue) {
+      spacingSlider.addEventListener('input', function() {
+        spacingValue.textContent = `${this.value}mm`;
+      });
+    }
+
+    // Handle comic style toggle
+    const pageFormatSelect = document.getElementById('page-format');
+    if (pageFormatSelect) {
+      pageFormatSelect.addEventListener('change', function() {
+        if (comicOptions) {
+          if (this.value === 'comic') {
+            comicOptions.classList.remove('hidden');
+          } else {
+            comicOptions.classList.add('hidden');
+          }
+        }
+      });
+    }
+
+    // Close modal functions
+    function closeModal() {
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    // Open modal (to be called from parent)
+    window.openSettingsModal = function() {
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeModal);
+    }
+    
+    // Close on backdrop click
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    }
+
+    // Apply settings
+    if (applyBtn) {
+      applyBtn.addEventListener('click', function() {
+        const pageFormatEl = document.getElementById('page-format') as HTMLSelectElement;
+        const orientationEl = document.querySelector('input[name="orientation"]:checked') as HTMLInputElement;
+        const marginVerticalEl = document.getElementById('margin-vertical') as HTMLInputElement;
+        const marginHorizontalEl = document.getElementById('margin-horizontal') as HTMLInputElement;
+        const imageSpacingEl = document.getElementById('image-spacing') as HTMLInputElement;
+        const pdfQualityEl = document.getElementById('pdf-quality') as HTMLSelectElement;
+        const includeMetadataEl = document.getElementById('include-metadata') as HTMLInputElement;
+        const includePageNumbersEl = document.getElementById('include-page-numbers') as HTMLInputElement;
+        const outputQualityEl = document.querySelector('input[name="output-quality"]:checked') as HTMLInputElement;
+        
+        // Comic-specific settings
+        const comicWidthEl = document.getElementById('comic-width') as HTMLInputElement;
+        const comicHeightEl = document.getElementById('comic-height') as HTMLInputElement;
+        const comicImageQualityEl = document.getElementById('comic-image-quality') as HTMLInputElement;
+
+        // Determine if comic style is selected
+        const isComicStyle = pageFormatEl?.value === 'comic';
+
+        // Get all settings values
+        const settings = {
+          pageFormat: pageFormatEl?.value || 'comic',
+          orientation: orientationEl?.value || 'portrait',
+          marginVertical: parseInt(marginVerticalEl?.value || '15'),
+          marginHorizontal: parseInt(marginHorizontalEl?.value || '15'),
+          imageSpacing: parseInt(imageSpacingEl?.value || '10'),
+          pdfQuality: pdfQualityEl?.value || 'MEDIUM',
+          includeMetadata: includeMetadataEl?.checked === true, // Corregido: usar === true
+          includePageNumbers: includePageNumbersEl?.checked === true, // Corregido: usar === true
+          includeWatermark: true, // Always true - watermark is mandatory
+          outputQuality: isComicStyle ? 'comic' : (outputQualityEl?.value || 'hd'),
+          // Comic-specific settings
+          comicWidth: parseInt(comicWidthEl?.value || '480'),
+          comicHeight: parseInt(comicHeightEl?.value || '3000'),
+          comicImageQuality: parseFloat(comicImageQualityEl?.value || '0.85')
+        };
+
+        // Store settings globally
+        (window as any).pdfSettings = settings;
+        
+        closeModal();
+        
+        // Show confirmation
+        console.log('PDF settings updated:', settings);
+      });
+    }
+
+    // Reset settings
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        const pageFormatEl = document.getElementById('page-format') as HTMLSelectElement;
+        const orientationPortraitEl = document.querySelector('input[name="orientation"][value="portrait"]') as HTMLInputElement;
+        const marginVerticalEl = document.getElementById('margin-vertical') as HTMLInputElement;
+        const marginHorizontalEl = document.getElementById('margin-horizontal') as HTMLInputElement;
+        const imageSpacingEl = document.getElementById('image-spacing') as HTMLInputElement;
+        const pdfQualityEl = document.getElementById('pdf-quality') as HTMLSelectElement;
+        const includeMetadataEl = document.getElementById('include-metadata') as HTMLInputElement;
+        const includePageNumbersEl = document.getElementById('include-page-numbers') as HTMLInputElement;
+        const outputQualityHdEl = document.querySelector('input[name="output-quality"][value="hd"]') as HTMLInputElement;
+        const comicWidthEl = document.getElementById('comic-width') as HTMLInputElement;
+        const comicHeightEl = document.getElementById('comic-height') as HTMLInputElement;
+        const comicImageQualityEl = document.getElementById('comic-image-quality') as HTMLInputElement;
+
+        if (pageFormatEl) pageFormatEl.value = 'comic'; // Comic como valor por defecto
+        if (orientationPortraitEl) orientationPortraitEl.checked = true;
+        if (marginVerticalEl) marginVerticalEl.value = '15';
+        if (marginHorizontalEl) marginHorizontalEl.value = '15';
+        if (imageSpacingEl) imageSpacingEl.value = '10';
+        if (spacingValue) spacingValue.textContent = '10mm';
+        if (pdfQualityEl) pdfQualityEl.value = 'MEDIUM';
+        if (includeMetadataEl) includeMetadataEl.checked = false; // Información de imagen desactivada por defecto
+        if (includePageNumbersEl) includePageNumbersEl.checked = true; // Números de página activados por defecto
+        if (outputQualityHdEl) outputQualityHdEl.checked = true;
+        if (comicWidthEl) comicWidthEl.value = '480';
+        if (comicHeightEl) comicHeightEl.value = '3000';
+        if (comicImageQualityEl) comicImageQualityEl.value = '0.85';
+        if (comicOptions) comicOptions.classList.remove('hidden'); // Mostrar opciones de cómic por defecto
+      });
+    }
+
+    // Initialize default settings
+    const initializeDefaultSettings = () => {
+      // Configuraciones por defecto para modo cómic
+      const defaultSettings = {
+        pageFormat: 'comic',
+        orientation: 'portrait',
+        marginVertical: 15,
+        marginHorizontal: 15,
+        imageSpacing: 10,
+        pdfQuality: 'MEDIUM',
+        includeMetadata: false, // Información de imagen desactivada por defecto
+        includePageNumbers: true, // Números de página activados por defecto
+        includeWatermark: true,
+        outputQuality: 'comic',
+        comicWidth: 480,
+        comicHeight: 3000,
+        comicImageQuality: 0.85
+      };
+      
+      // Establecer configuraciones globales por defecto
+      (window as any).pdfSettings = defaultSettings;
+    };
+
+    // Inicializar configuraciones por defecto
+    initializeDefaultSettings();
+
+    if (resetBtn) {
+      resetBtn.click();
+    }
+  });
+</script>
