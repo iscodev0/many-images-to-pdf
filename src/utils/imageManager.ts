@@ -229,6 +229,12 @@ export class ImageManager {
     let draggedElement: HTMLElement | null = null;
     let draggedIndex = -1;
     
+    // Touch-specific variables
+    let touchStartY: number = 0;
+    let isDragging: boolean = false;
+    let touchOffset: number = 0;
+    let ghostElement: HTMLElement | null = null;
+    
     // Remove any existing listeners to prevent duplicates
     const newTbody = tbody.cloneNode(true) as HTMLTableSectionElement;
     tbody.parentNode?.replaceChild(newTbody, tbody);
@@ -244,10 +250,57 @@ export class ImageManager {
       style.textContent = `
         .drag-over { background-color: rgba(59, 130, 246, 0.1) !important; border-top: 2px solid #3b82f6; }
         .dragging { opacity: 0.5; }
+        .touch-dragging { 
+          opacity: 0.3; 
+          transform: scale(1.05);
+          transition: transform 0.2s ease;
+        }
+        .ghost-element {
+          position: fixed;
+          z-index: 1000;
+          opacity: 0.8;
+          pointer-events: none;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
       `;
       document.head.appendChild(style);
     }
 
+    // Helper functions for touch support
+    const getTouchY = (e: TouchEvent): number => {
+      return e.touches[0]?.clientY || e.changedTouches[0]?.clientY || 0;
+    };
+
+    const createGhostElement = (sourceRow: HTMLTableRowElement): HTMLElement => {
+      const ghost = sourceRow.cloneNode(true) as HTMLElement;
+      ghost.className += ' ghost-element';
+      ghost.style.position = 'fixed';
+      ghost.style.top = '-1000px';
+      ghost.style.left = '0';
+      ghost.style.width = sourceRow.offsetWidth + 'px';
+      ghost.style.zIndex = '1000';
+      ghost.style.opacity = '0.8';
+      ghost.style.backgroundColor = 'var(--muted)';
+      ghost.style.pointerEvents = 'none';
+      ghost.style.borderRadius = '8px';
+      ghost.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      document.body.appendChild(ghost);
+      return ghost;
+    };
+
+    const getRowFromPoint = (x: number, y: number): HTMLTableRowElement | null => {
+      const elements = document.elementsFromPoint(x, y);
+      for (const element of elements) {
+        const row = element.closest('tr') as HTMLTableRowElement;
+        if (row && row.dataset.index && row !== draggedElement) {
+          return row;
+        }
+      }
+      return null;
+    };
+
+    // MOUSE EVENTS (Desktop drag and drop)
     freshTbody.addEventListener('dragstart', (e) => {
       const target = e.target as HTMLElement;
       const row = target.closest('tr') as HTMLTableRowElement;
@@ -295,6 +348,93 @@ export class ImageManager {
       }
     });
 
+    // TOUCH EVENTS (Mobile drag and drop)
+    freshTbody.addEventListener('touchstart', (e) => {
+      const target = e.target as HTMLElement;
+      const row = target.closest('tr') as HTMLTableRowElement;
+      if (row) {
+        touchStartY = getTouchY(e);
+        draggedElement = row;
+        draggedIndex = parseInt(row.dataset.index || '-1');
+        touchOffset = touchStartY - row.getBoundingClientRect().top;
+        isDragging = false; // Will be set to true after threshold
+        
+        // Prevent default scrolling during potential drag
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    freshTbody.addEventListener('touchmove', (e) => {
+      if (!draggedElement) return;
+      
+      const currentY = getTouchY(e);
+      const deltaY = Math.abs(currentY - touchStartY);
+      
+      // Start dragging after a small threshold (prevents accidental drags)
+      if (!isDragging && deltaY > 15) {
+        isDragging = true;
+        draggedElement.classList.add('touch-dragging');
+        ghostElement = createGhostElement(draggedElement as HTMLTableRowElement);
+      }
+      
+      if (isDragging) {
+        e.preventDefault();
+        
+        // Move ghost element
+        if (ghostElement) {
+          ghostElement.style.top = (currentY - touchOffset) + 'px';
+          ghostElement.style.left = draggedElement.getBoundingClientRect().left + 'px';
+        }
+        
+        // Highlight target row
+        const targetRow = getRowFromPoint(e.touches[0].clientX, currentY);
+        
+        // Remove previous highlights
+        freshTbody.querySelectorAll('.drag-over').forEach(el => {
+          el.classList.remove('drag-over');
+        });
+        
+        // Add highlight to target
+        if (targetRow && targetRow !== draggedElement) {
+          targetRow.classList.add('drag-over');
+        }
+      }
+    }, { passive: false });
+
+    freshTbody.addEventListener('touchend', (e) => {
+      if (!draggedElement) return;
+      
+      if (isDragging) {
+        const currentY = getTouchY(e);
+        const targetRow = getRowFromPoint(e.changedTouches[0].clientX, currentY);
+        
+        if (targetRow && draggedIndex !== -1) {
+          const targetIndex = parseInt(targetRow.dataset.index || '-1');
+          if (targetIndex !== -1 && targetIndex !== draggedIndex) {
+            this.performReorder(draggedIndex, targetIndex);
+          }
+        }
+        
+        // Clean up ghost element
+        if (ghostElement) {
+          document.body.removeChild(ghostElement);
+          ghostElement = null;
+        }
+      }
+      
+      // Clean up
+      if (draggedElement) {
+        draggedElement.classList.remove('touch-dragging');
+        draggedElement = null;
+      }
+      draggedIndex = -1;
+      isDragging = false;
+      
+      freshTbody.querySelectorAll('.drag-over').forEach(el => {
+        el.classList.remove('drag-over');
+      });
+    });
+
     // Make all rows draggable
     this.updateDraggableRows();
   }
@@ -317,11 +457,19 @@ export class ImageManager {
     this.images.splice(toIndex, 0, movedItem);
     
     // Update UI
-    this.updateUI();
+    this.renderImages();
     
     // Re-initialize drag and drop
     setTimeout(() => {
       this.initializeDragAndDrop();
     }, 50);
+  }
+
+  reorderImages(fromIndex: number, toIndex: number): void {
+    this.performReorder(fromIndex, toIndex);
+  }
+
+  renderImages(): void {
+    this.updateUI();
   }
 }

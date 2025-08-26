@@ -53,21 +53,8 @@ export class PDFGenerator {
       doc.restoreGraphicsState();
     };
 
-    // Add header if metadata is enabled
-    if (config.includeMetadata) {
-      pdf.setFontSize(16);
-      pdf.setTextColor(60, 60, 60);
-      pdf.text('Image Collection', 20, 20);
-      
-      pdf.setFontSize(10);
-      pdf.setTextColor(120, 120, 120);
-      const date = new Date().toLocaleDateString();
-      pdf.text(`Generated on ${date} - ${images.length} images`, 20, 35);
-      
-      currentY = 50;
-    } else {
-      currentY = 0; // Sin header en modo cómic por defecto
-    }
+    // Sin header ni metadata en modo cómic - las imágenes empiezan desde Y = 0
+    currentY = 0;
 
     for (let i = 0; i < images.length; i++) {
       const imageItem = images[i];
@@ -76,24 +63,73 @@ export class PDFGenerator {
         const dataUrl = await this.fileToDataUrl(imageItem.compressedFile);
         const imgData = await this.createImageFromDataUrl(dataUrl);
         
-        // Comic style: usar todo el ancho disponible sin márgenes laterales
+        // Modo cómic: usar todo el ancho disponible sin márgenes
         const targetWidth = config.pageWidth;
         const aspectRatio = imgData.height / imgData.width;
-        const width = targetWidth;
-        const height = targetWidth * aspectRatio;
+        const totalImageHeight = targetWidth * aspectRatio;
         
-        // Check if we need a new page
-        if (currentY + height > config.pageHeight) {
-          pdf.addPage();
-          currentY = 0;
+        let remainingImageHeight = totalImageHeight;
+        let imageOffsetY = 0;
+        
+        // Dividir la imagen entre páginas si es necesario
+        while (remainingImageHeight > 0) {
+          const availableSpaceInPage = config.pageHeight - currentY;
+          
+          // Si no hay espacio en la página actual, crear nueva página
+          if (availableSpaceInPage <= 0) {
+            pdf.addPage();
+            currentY = 0;
+            continue;
+          }
+          
+          // Determinar cuánto de la imagen cabe en esta página
+          const heightToRenderInThisPage = Math.min(remainingImageHeight, availableSpaceInPage);
+          
+          // Calcular la proporción de la imagen que vamos a renderizar
+          const cropRatio = heightToRenderInThisPage / totalImageHeight;
+          const cropStartRatio = imageOffsetY / totalImageHeight;
+          
+          // Crear un canvas temporal para recortar la imagen
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          if (ctx) {
+            // Configurar el canvas para la porción de imagen
+            canvas.width = imgData.width;
+            canvas.height = imgData.height * cropRatio;
+            
+            // Dibujar solo la porción necesaria de la imagen
+            ctx.drawImage(
+              imgData,
+              0, imgData.height * cropStartRatio, // sourceX, sourceY
+              imgData.width, imgData.height * cropRatio, // sourceWidth, sourceHeight
+              0, 0, // destX, destY
+              canvas.width, canvas.height // destWidth, destHeight
+            );
+            
+            // Convertir el canvas a data URL
+            const croppedDataUrl = canvas.toDataURL('image/jpeg', config.imageQuality);
+            
+            // Agregar la porción de imagen al PDF
+            pdf.addImage(croppedDataUrl, 'JPEG', 0, currentY, targetWidth, heightToRenderInThisPage);
+            
+            console.log(`Imagen ${i + 1}: Renderizando ${heightToRenderInThisPage}px de ${totalImageHeight}px en Y=${currentY}`);
+          }
+          
+          // Actualizar posiciones
+          currentY += heightToRenderInThisPage;
+          imageOffsetY += heightToRenderInThisPage;
+          remainingImageHeight -= heightToRenderInThisPage;
+          
+          // Si llegamos al final de la página, crear nueva página para el resto
+          if (currentY >= config.pageHeight && remainingImageHeight > 0) {
+            pdf.addPage();
+            currentY = 0;
+          }
         }
         
-        // Add image sin espacios - estilo cómic continuo
-        pdf.addImage(dataUrl, 'JPEG', 0, currentY, width, height);
-        currentY += height; // Sin espacios adicionales
-        
       } catch (error) {
-        console.error('Error processing image in comic PDF:', error);
+        console.error(`Error processing image ${i + 1} in comic PDF:`, error);
       }
     }
 
