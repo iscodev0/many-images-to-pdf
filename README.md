@@ -31,8 +31,8 @@
 
 - 📁 **Multi-Upload**: Drag & drop files + URL support
 - 🔄 **Drag Reorder**: Change image order easily
-- 📏 **Smart Quality**: SD/HD with comic-optimized layouts
-- 🎨 **Professional Output**: A4, Letter, Legal, A3, Custom sizes
+- 📏 **Smart Quality**: 480px/720px/Original with optimized compression
+- 🎨 **Professional Output**: A4, Letter, Legal, Comic styles
 - 🔒 **Watermark**: Branded PDFs (always included)
 - 🌙 **Dark/Light Mode**: System preference + manual toggle
 - 📱 **Mobile First**: Perfect experience on any device
@@ -68,7 +68,7 @@ bun install && bun run dev
 ## 🚀 Default Configuration
 
 - **Style**: Comic mode (no spaces between images)
-- **Quality**: Standard (SD) for lighter files
+- **Quality**: Standard 720px for balanced performance
 - **Watermark**: Always enabled (PandaScan Converter)
 - **Image info**: Disabled by default
 - **Page numbers**: Enabled by default
@@ -108,13 +108,13 @@ bun install && bun run dev
 
 **Perfecto para**: Cómics, documentos, colecciones de fotos
 
-## ⚙️ Settings
+## ⚙️ Quality Settings
 
-| Feature | Options |
-|---------|---------|
-| **Quality** | SD (optimized) • HD (maximum) |
-| **Page Format** | A4 • Letter • Legal • A3 • Custom |
-| **Comic Style** | Standard • Comic Layout (optimized for reading) |
+| Quality | Resolution | Best For | File Size |
+|---------|------------|----------|-----------|
+| **480px** | 480px max width | Mobile viewing, fast loading | Smallest |
+| **720px** | 720px max width | General use, balanced quality | Medium (recommended) |
+| **Original** | No compression | Print quality, archival | Largest |
 ## 🏗️ Project Structure
 
 ```

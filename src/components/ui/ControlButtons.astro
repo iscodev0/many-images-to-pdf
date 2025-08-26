@@ -1,6 +1,6 @@
 ---
 import Button from './Button.astro';
-import { Settings, RotateCcw, Trash2, Download } from 'lucide-astro';
+import { Settings, RotateCcw, Trash2, Download, RefreshCw } from 'lucide-astro';
 
 interface Props {
   class?: string;
@@ -16,6 +16,13 @@ const { class: className = '', ...props } = Astro.props;
     <Settings class="w-4 h-4 mr-1 sm:mr-2" />
     <span class="hidden xs:inline">Configurar</span>
     <span class="xs:hidden">Config</span>
+  </Button>
+  
+  <!-- Actualizar calidad -->
+  <Button id="update-quality-btn" variant="outline" size="lg" class="flex-1 sm:flex-none min-w-[100px] sm:min-w-[120px]">
+    <RefreshCw class="w-4 h-4 mr-1 sm:mr-2" />
+    <span class="hidden sm:inline">Actualizar</span>
+    <span class="sm:hidden">Refresh</span>
   </Button>
   
   <!-- Orden reverso -->

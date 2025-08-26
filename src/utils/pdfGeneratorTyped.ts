@@ -15,10 +15,9 @@ export class PDFGenerator {
 
   static async generateComicStylePDF(images: ImageItem[], settings: Partial<PDFSettings> = {}): Promise<void> {
     const config: ComicSettings = {
-      pageWidth: settings.comicWidth || 480,
+      pageWidth: settings.comicWidth || 720,
       pageHeight: settings.comicHeight || 3000,
-      imageQuality: settings.comicImageQuality || 0.85,
-      pdfQuality: settings.pdfQuality || 'MEDIUM',
+      imageQuality: 1.00, // Calidad original
       includeWatermark: settings.includeWatermark !== false,
       includeMetadata: settings.includeMetadata === true, // Por defecto false para cómics
       includePageNumbers: settings.includePageNumbers !== false, // Por defecto true
@@ -60,6 +59,7 @@ export class PDFGenerator {
       const imageItem = images[i];
       
       try {
+        // Usar imagen comprimida según la calidad seleccionada
         const dataUrl = await this.fileToDataUrl(imageItem.compressedFile);
         const imgData = await this.createImageFromDataUrl(dataUrl);
         
@@ -107,11 +107,26 @@ export class PDFGenerator {
               canvas.width, canvas.height // destWidth, destHeight
             );
             
-            // Convertir el canvas a data URL
-            const croppedDataUrl = canvas.toDataURL('image/jpeg', config.imageQuality);
+            // Convertir el canvas a data URL manteniendo el formato original cuando sea posible
+            let croppedDataUrl: string;
+            let format: string;
+            
+            // Determinar el mejor formato basado en el tipo original
+            if (imageItem.compressedFile.type.includes('png')) {
+              croppedDataUrl = canvas.toDataURL('image/png'); // PNG sin compresión adicional
+              format = 'PNG';
+            } else if (imageItem.compressedFile.type.includes('webp')) {
+              // WebP con máxima calidad
+              croppedDataUrl = canvas.toDataURL('image/webp', 0.95);
+              format = 'WEBP';
+            } else {
+              // JPEG con alta calidad para evitar recompresión
+              croppedDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+              format = 'JPEG';
+            }
             
             // Agregar la porción de imagen al PDF
-            pdf.addImage(croppedDataUrl, 'JPEG', 0, currentY, targetWidth, heightToRenderInThisPage);
+            pdf.addImage(croppedDataUrl, format, 0, currentY, targetWidth, heightToRenderInThisPage);
             
             console.log(`Imagen ${i + 1}: Renderizando ${heightToRenderInThisPage}px de ${totalImageHeight}px en Y=${currentY}`);
           }
@@ -167,13 +182,11 @@ export class PDFGenerator {
     const orientation = settings.orientation || 'portrait';
     
     const config = {
-      quality: settings.quality || 'hd',
       pageWidth: orientation === 'portrait' ? pageFormat.width : pageFormat.height,
       pageHeight: orientation === 'portrait' ? pageFormat.height : pageFormat.width,
       margin: settings.marginVertical || 15,
       marginHorizontal: settings.marginHorizontal || 15,
       imageSpacing: settings.imageSpacing || 10,
-      pdfQuality: settings.pdfQuality || 'MEDIUM',
       includeMetadata: settings.includeMetadata !== false,
       includePageNumbers: settings.includePageNumbers !== false,
       includeWatermark: settings.includeWatermark !== false,
@@ -230,6 +243,7 @@ export class PDFGenerator {
       const imageItem = images[i];
       
       try {
+        // Usar imagen comprimida según la calidad seleccionada
         const dataUrl = await this.fileToDataUrl(imageItem.compressedFile);
         const imgData = await this.createImageFromDataUrl(dataUrl);
         
@@ -250,9 +264,19 @@ export class PDFGenerator {
           isFirstPage = false;
         }
 
+        // Determinar el mejor formato basado en el tipo original
+        let format: string;
+        if (imageItem.compressedFile.type.includes('png')) {
+          format = 'PNG';
+        } else if (imageItem.compressedFile.type.includes('webp')) {
+          format = 'WEBP';
+        } else {
+          format = 'JPEG';
+        }
+
         // Add image
         const x = config.margin + (contentWidth - imageWidth) / 2;
-        pdf.addImage(dataUrl, 'JPEG', x, currentPageHeight, imageWidth, imageHeight);
+        pdf.addImage(dataUrl, format, x, currentPageHeight, imageWidth, imageHeight);
         
         // Add image metadata if enabled
         if (config.includeMetadata) {

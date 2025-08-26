@@ -8,7 +8,7 @@ export interface ImageItem {
   type: 'local' | 'url';
   originalFile: File;
   compressedFile: File;
-  quality: 'sd' | 'hd';
+  quality: '480px' | '720px' | 'original';
 }
 
 export interface PDFSettings {
@@ -17,28 +17,21 @@ export interface PDFSettings {
   marginVertical: number;
   marginHorizontal: number;
   imageSpacing: number;
-  pdfQuality: 'FAST' | 'MEDIUM' | 'SLOW';
   includeMetadata: boolean;
   includePageNumbers: boolean;
   includeWatermark: boolean;
-  outputQuality: 'sd' | 'hd' | 'comic';
+  quality: '480px' | '720px' | 'original';
   comicWidth?: number;
   comicHeight?: number;
-  comicImageQuality?: number;
-  quality?: 'sd' | 'hd';
 }
 
 export interface ComicSettings {
   pageWidth: number;
   pageHeight: number;
   imageQuality: number;
-  pdfQuality: string;
   includeWatermark: boolean;
   includeMetadata: boolean;
   includePageNumbers: boolean;
-  comicWidth?: number;
-  comicHeight?: number;
-  comicImageQuality?: number;
 }
 
 // Extend Window interface

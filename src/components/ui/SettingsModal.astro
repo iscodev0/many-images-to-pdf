@@ -54,7 +54,7 @@ const { class: className = '', ...props } = Astro.props;
             <input 
               type="number" 
               id="comic-width"
-              value="480"
+              value="720"
               min="320"
               max="1080"
               class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -71,18 +71,6 @@ const { class: className = '', ...props } = Astro.props;
               class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             />
           </div>
-        </div>
-        <div>
-          <label class="text-xs text-muted-foreground">Image Quality (0.1 - 1.0)</label>
-          <input 
-            type="number" 
-            id="comic-image-quality"
-            value="0.85"
-            min="0.1"
-            max="1.0"
-            step="0.05"
-            class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          />
         </div>
       </div>
 
@@ -150,36 +138,30 @@ const { class: className = '', ...props } = Astro.props;
 
       <!-- Quality Settings -->
       <div class="space-y-3">
-        <label class="text-sm font-medium">Output Quality</label>
+        <label class="text-sm font-medium">Calidad de Imagen</label>
         <div class="grid grid-cols-1 gap-3">
           <label class="flex items-center space-x-3 cursor-pointer p-3 border rounded-lg hover:bg-muted/30 transition-colors">
-            <input type="radio" name="output-quality" value="sd" class="w-4 h-4 text-primary" />
+            <input type="radio" name="image-quality" value="480px" class="w-4 h-4 text-primary" />
             <div class="flex flex-col flex-1">
-              <span class="text-sm font-medium">SD Quality (480px)</span>
-              <span class="text-xs text-muted-foreground">Faster processing, smaller files, good for mobile</span>
+              <span class="text-sm font-medium">480px - Compacto</span>
+              <span class="text-xs text-muted-foreground">Archivos ligeros, ideal para móviles</span>
             </div>
           </label>
           <label class="flex items-center space-x-3 cursor-pointer p-3 border rounded-lg hover:bg-muted/30 transition-colors">
-            <input type="radio" name="output-quality" value="hd" checked class="w-4 h-4 text-primary" />
+            <input type="radio" name="image-quality" value="720px" checked class="w-4 h-4 text-primary" />
             <div class="flex flex-col flex-1">
-              <span class="text-sm font-medium">HD Quality (720px)</span>
-              <span class="text-xs text-muted-foreground">High quality, balanced size, recommended</span>
+              <span class="text-sm font-medium">720px - Estándar</span>
+              <span class="text-xs text-muted-foreground">Buena calidad, tamaño equilibrado (recomendado)</span>
+            </div>
+          </label>
+          <label class="flex items-center space-x-3 cursor-pointer p-3 border rounded-lg hover:bg-muted/30 transition-colors">
+            <input type="radio" name="image-quality" value="original" class="w-4 h-4 text-primary" />
+            <div class="flex flex-col flex-1">
+              <span class="text-sm font-medium">Original - Máxima</span>
+              <span class="text-xs text-muted-foreground">Sin compresión, tamaño máximo</span>
             </div>
           </label>
         </div>
-      </div>
-
-      <!-- Image Quality -->
-      <div class="space-y-3">
-        <label class="text-sm font-medium">PDF Compression Quality</label>
-        <select 
-          id="pdf-quality"
-          class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          <option value="FAST">Fast (Smaller file)</option>
-          <option value="MEDIUM" selected>Medium (Balanced)</option>
-          <option value="SLOW">Slow (Best quality)</option>
-        </select>
       </div>
 
       <!-- Watermark Settings -->
@@ -307,15 +289,13 @@ const { class: className = '', ...props } = Astro.props;
         const marginVerticalEl = document.getElementById('margin-vertical') as HTMLInputElement;
         const marginHorizontalEl = document.getElementById('margin-horizontal') as HTMLInputElement;
         const imageSpacingEl = document.getElementById('image-spacing') as HTMLInputElement;
-        const pdfQualityEl = document.getElementById('pdf-quality') as HTMLSelectElement;
         const includeMetadataEl = document.getElementById('include-metadata') as HTMLInputElement;
         const includePageNumbersEl = document.getElementById('include-page-numbers') as HTMLInputElement;
-        const outputQualityEl = document.querySelector('input[name="output-quality"]:checked') as HTMLInputElement;
+        const imageQualityEl = document.querySelector('input[name="image-quality"]:checked') as HTMLInputElement;
         
         // Comic-specific settings
         const comicWidthEl = document.getElementById('comic-width') as HTMLInputElement;
         const comicHeightEl = document.getElementById('comic-height') as HTMLInputElement;
-        const comicImageQualityEl = document.getElementById('comic-image-quality') as HTMLInputElement;
 
         // Determine if comic style is selected
         const isComicStyle = pageFormatEl?.value === 'comic';
@@ -327,15 +307,13 @@ const { class: className = '', ...props } = Astro.props;
           marginVertical: parseInt(marginVerticalEl?.value || '15'),
           marginHorizontal: parseInt(marginHorizontalEl?.value || '15'),
           imageSpacing: parseInt(imageSpacingEl?.value || '10'),
-          pdfQuality: pdfQualityEl?.value || 'MEDIUM',
-          includeMetadata: includeMetadataEl?.checked === true, // Corregido: usar === true
-          includePageNumbers: includePageNumbersEl?.checked === true, // Corregido: usar === true
+          includeMetadata: includeMetadataEl?.checked === true,
+          includePageNumbers: includePageNumbersEl?.checked === true,
           includeWatermark: true, // Always true - watermark is mandatory
-          outputQuality: isComicStyle ? 'comic' : (outputQualityEl?.value || 'hd'),
+          quality: imageQualityEl?.value || '720px',
           // Comic-specific settings
-          comicWidth: parseInt(comicWidthEl?.value || '480'),
-          comicHeight: parseInt(comicHeightEl?.value || '3000'),
-          comicImageQuality: parseFloat(comicImageQualityEl?.value || '0.85')
+          comicWidth: parseInt(comicWidthEl?.value || '720'),
+          comicHeight: parseInt(comicHeightEl?.value || '3000')
         };
 
         // Store settings globally
@@ -356,13 +334,11 @@ const { class: className = '', ...props } = Astro.props;
         const marginVerticalEl = document.getElementById('margin-vertical') as HTMLInputElement;
         const marginHorizontalEl = document.getElementById('margin-horizontal') as HTMLInputElement;
         const imageSpacingEl = document.getElementById('image-spacing') as HTMLInputElement;
-        const pdfQualityEl = document.getElementById('pdf-quality') as HTMLSelectElement;
         const includeMetadataEl = document.getElementById('include-metadata') as HTMLInputElement;
         const includePageNumbersEl = document.getElementById('include-page-numbers') as HTMLInputElement;
-        const outputQualityHdEl = document.querySelector('input[name="output-quality"][value="hd"]') as HTMLInputElement;
+        const imageQuality720pxEl = document.querySelector('input[name="image-quality"][value="720px"]') as HTMLInputElement;
         const comicWidthEl = document.getElementById('comic-width') as HTMLInputElement;
         const comicHeightEl = document.getElementById('comic-height') as HTMLInputElement;
-        const comicImageQualityEl = document.getElementById('comic-image-quality') as HTMLInputElement;
 
         if (pageFormatEl) pageFormatEl.value = 'comic'; // Comic como valor por defecto
         if (orientationPortraitEl) orientationPortraitEl.checked = true;
@@ -370,13 +346,11 @@ const { class: className = '', ...props } = Astro.props;
         if (marginHorizontalEl) marginHorizontalEl.value = '15';
         if (imageSpacingEl) imageSpacingEl.value = '10';
         if (spacingValue) spacingValue.textContent = '10mm';
-        if (pdfQualityEl) pdfQualityEl.value = 'MEDIUM';
         if (includeMetadataEl) includeMetadataEl.checked = false; // Información de imagen desactivada por defecto
         if (includePageNumbersEl) includePageNumbersEl.checked = true; // Números de página activados por defecto
-        if (outputQualityHdEl) outputQualityHdEl.checked = true;
-        if (comicWidthEl) comicWidthEl.value = '480';
+        if (imageQuality720pxEl) imageQuality720pxEl.checked = true; // 720px por defecto
+        if (comicWidthEl) comicWidthEl.value = '720';
         if (comicHeightEl) comicHeightEl.value = '3000';
-        if (comicImageQualityEl) comicImageQualityEl.value = '0.85';
         if (comicOptions) comicOptions.classList.remove('hidden'); // Mostrar opciones de cómic por defecto
       });
     }
@@ -390,14 +364,12 @@ const { class: className = '', ...props } = Astro.props;
         marginVertical: 15,
         marginHorizontal: 15,
         imageSpacing: 10,
-        pdfQuality: 'MEDIUM',
         includeMetadata: false, // Información de imagen desactivada por defecto
         includePageNumbers: true, // Números de página activados por defecto
         includeWatermark: true,
-        outputQuality: 'comic',
-        comicWidth: 480,
-        comicHeight: 3000,
-        comicImageQuality: 0.85
+        quality: '720px', // Calidad por defecto
+        comicWidth: 720,
+        comicHeight: 3000
       };
       
       // Establecer configuraciones globales por defecto

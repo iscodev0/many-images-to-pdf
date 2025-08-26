@@ -4,18 +4,18 @@ import { PDFGenerator } from './pdfGeneratorTyped';
 
 export class ImageManager {
   private images: ImageItem[] = [];
-  private currentQuality: 'sd' | 'hd' = 'hd';
+  private currentQuality: '480px' | '720px' | 'original' = '720px';
 
   constructor() {
     this.initializeEventListeners();
     this.updateUI();
   }
 
-  getCurrentQuality(): 'sd' | 'hd' {
+  getCurrentQuality(): '480px' | '720px' | 'original' {
     // Get quality from settings modal (priority)
     const settings = (window as any).pdfSettings;
-    if (settings && settings.outputQuality) {
-      return settings.outputQuality === 'sd' ? 'sd' : 'hd';
+    if (settings && settings.quality) {
+      return settings.quality;
     }
     
     // Fallback to default
@@ -43,6 +43,7 @@ export class ImageManager {
     });
     document.getElementById('reverse-order-btn')?.addEventListener('click', this.reverseOrder.bind(this));
     document.getElementById('clear-all-btn')?.addEventListener('click', this.clearAll.bind(this));
+    document.getElementById('update-quality-btn')?.addEventListener('click', this.updateAllImageQuality.bind(this));
     document.getElementById('download-pdf-btn')?.addEventListener('click', this.downloadPDF.bind(this));
 
     // Drag and drop
@@ -125,14 +126,12 @@ export class ImageManager {
         includeMetadata: false,
         includePageNumbers: true,
         includeWatermark: true,
-        outputQuality: 'comic',
-        comicWidth: 480,
-        comicHeight: 3000,
-        comicImageQuality: 0.85
+        quality: '720px',
+        comicWidth: 720,
+        comicHeight: 3000
       };
       
       const settings: Partial<PDFSettings> = {
-        quality: this.getCurrentQuality(),
         ...userSettings
       };
 
@@ -190,9 +189,10 @@ export class ImageManager {
           <td class="p-4 text-sm text-muted-foreground">${this.formatFileSize(image.size)}</td>
           <td class="p-4">
             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-              image.quality === 'hd' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
+              image.quality === 'original' ? 'bg-green-100 text-green-800' : 
+              image.quality === '720px' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
             }">
-              ${image.quality.toUpperCase()}
+              ${image.quality === 'original' ? 'ORIGINAL' : image.quality.toUpperCase()}
             </span>
           </td>
           <td class="p-4">
