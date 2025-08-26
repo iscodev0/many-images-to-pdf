@@ -6,20 +6,58 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
-<div class="text-center space-y-4">
-  <div class="flex items-center justify-center space-x-4">
-    <div class="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden">
-      <img src="/logo.webp" alt="PandaScan Logo" class="w-20 h-20" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-      <!-- <div class="w-8 h-8 text-white font-bold text-2xl hidden items-center justify-center">🐼</div> -->
+<!-- Header responsive con modo oscuro -->
+<div class="text-center space-y-4 sm:space-y-6">
+  <!-- Logo y título responsive -->
+  <div class="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+    <!-- Logo responsive -->
+    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center overflow-hidden">
+      <img 
+        src="/logo.webp" 
+        alt="PandaScan Logo" 
+        class="w-16 h-16 sm:w-20 sm:h-20 transition-transform duration-200 hover:scale-105" 
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+      />
+      <!-- Fallback emoji -->
+      <div class="w-16 h-16 sm:w-20 sm:h-20 text-4xl sm:text-5xl hidden items-center justify-center">🐼</div>
     </div>
-    <div>
-      <h1 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-zinc-800 to-blue-600 bg-clip-text text-transparent">
-        PandaScan Converter ( Beta )
+    
+    <!-- Título responsive -->
+    <div class="text-center sm:text-left">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground via-primary to-blue-600 bg-clip-text text-transparent leading-tight">
+        PandaScan Converter
       </h1>
-      <p class="text-sm text-muted-foreground">powered by iscodev </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center sm:justify-start space-y-1 sm:space-y-0 sm:space-x-2 mt-1">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+          Beta
+        </span>
+        <p class="text-xs sm:text-sm text-muted-foreground">powered by iscodev</p>
+      </div>
     </div>
   </div>
-  <p class="text-xl text-muted-foreground max-w-2xl mx-auto text-center">
-    Transform your images into professional PDFs with our advanced converter. Perfect for comics, documents, and collections.
-  </p>
+  
+  <!-- Descripción responsive -->
+  <div class="max-w-2xl mx-auto px-4">
+    <p class="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto text-center leading-relaxed">
+      <span class="block sm:inline">Transform your images into professional PDFs</span>
+      <span class="hidden sm:inline"> with our advanced converter.</span>
+      <span class="block sm:inline mt-1 sm:mt-0"> Perfect for comics, documents, and collections.</span>
+    </p>
+  </div>
+  
+  <!-- Badges responsive -->
+  <div class="flex flex-wrap justify-center gap-2 sm:gap-3 px-4">
+    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium bg-primary/10 text-primary border border-primary/20">
+      ✨ Gratis
+    </span>
+    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium bg-green-500/10 text-green-600 border border-green-500/20 dark:text-green-400">
+      🚀 Rápido
+    </span>
+    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-500/10 text-blue-600 border border-blue-500/20 dark:text-blue-400">
+      📱 Mobile
+    </span>
+    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs sm:text-sm font-medium bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:text-purple-400">
+      🌙 Dark Mode
+    </span>
+  </div>
 </div>

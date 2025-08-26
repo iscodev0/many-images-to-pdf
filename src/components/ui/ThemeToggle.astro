@@ -1,0 +1,105 @@
+---
+// ThemeToggle.astro - Botón para cambiar entre modo claro y oscuro
+---
+
+<button
+  id="theme-toggle"
+  class="fixed top-4 right-4 z-50 p-3 rounded-full bg-card border border-border shadow-lg hover:shadow-xl transition-all duration-200 group md:top-6 md:right-6"
+  aria-label="Cambiar tema"
+>
+  <svg 
+    id="sun-icon" 
+    class="w-5 h-5 text-foreground transition-all duration-200 group-hover:scale-110 hidden dark:block" 
+    fill="currentColor" 
+    viewBox="0 0 20 20"
+  >
+    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+  </svg>
+  
+  <svg 
+    id="moon-icon" 
+    class="w-5 h-5 text-foreground transition-all duration-200 group-hover:scale-110 block dark:hidden" 
+    fill="currentColor" 
+    viewBox="0 0 20 20"
+  >
+    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+  </svg>
+</button>
+
+<script>
+  class ThemeManager {
+    private isDark: boolean = false;
+    private toggleButton: HTMLElement | null = null;
+
+    constructor() {
+      this.init();
+    }
+
+    private init(): void {
+      // Detectar tema guardado o preferencia del sistema
+      const savedTheme = localStorage.getItem('theme');
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      this.isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
+      this.applyTheme();
+      
+      // Configurar botón toggle
+      this.toggleButton = document.getElementById('theme-toggle');
+      if (this.toggleButton) {
+        this.toggleButton.addEventListener('click', () => this.toggleTheme());
+      }
+      
+      // Escuchar cambios en preferencias del sistema
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+          this.isDark = e.matches;
+          this.applyTheme();
+        }
+      });
+    }
+
+    private applyTheme(): void {
+      const root = document.documentElement;
+      
+      if (this.isDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      
+      // Actualizar meta theme-color para móviles
+      let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta');
+        metaThemeColor.setAttribute('name', 'theme-color');
+        document.head.appendChild(metaThemeColor);
+      }
+      
+      const themeColor = this.isDark ? '#1a1a1a' : '#ffffff';
+      metaThemeColor.setAttribute('content', themeColor);
+    }
+
+    private toggleTheme(): void {
+      this.isDark = !this.isDark;
+      this.applyTheme();
+      localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+      
+      // Animación suave
+      if (this.toggleButton) {
+        this.toggleButton.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          if (this.toggleButton) {
+            this.toggleButton.style.transform = 'scale(1)';
+          }
+        }, 100);
+      }
+    }
+  }
+
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new ThemeManager());
+  } else {
+    new ThemeManager();
+  }
+</script>

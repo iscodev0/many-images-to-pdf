@@ -9,29 +9,34 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
-<Card class="p-8">
-  <div class="space-y-6">
-    <div class="flex items-center justify-between">
-      <h2 class="text-2xl font-semibold flex items-center space-x-2">
-        <ImageIcon class="w-6 h-6 text-primary" />
-        <span>Images Preview</span>
+<!-- Card responsive con padding adaptativo -->
+<Card class="p-4 sm:p-6 lg:p-8">
+  <div class="space-y-4 sm:space-y-6">
+    <!-- Header responsive -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
+      <h2 class="text-xl sm:text-2xl font-semibold flex items-center space-x-2">
+        <ImageIcon class="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+        <span>Vista Previa</span>
       </h2>
       <div id="image-count" class="text-sm text-muted-foreground">
-        0 images
+        0 imágenes
       </div>
     </div>
     
+    <!-- Contenedor de tabla con scroll horizontal -->
     <div class="relative w-full overflow-hidden rounded-lg border">
       <div class="overflow-x-auto">
-        <table class="w-full">
+        <!-- Tabla responsive -->
+        <table class="w-full min-w-[600px]">
           <thead class="border-b bg-muted/50">
             <tr>
-              <th class="text-left p-4 font-medium text-sm w-16">#</th>
-              <th class="text-left p-4 font-medium text-sm w-20">Preview</th>
-              <th class="text-left p-4 font-medium text-sm">Name</th>
-              <th class="text-left p-4 font-medium text-sm w-24">Size</th>
-              <th class="text-left p-4 font-medium text-sm w-20">Quality</th>
-              <th class="text-left p-4 font-medium text-sm w-20">Actions</th>
+              <!-- Columnas con tamaños responsive -->
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm w-12 sm:w-16">#</th>
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm w-16 sm:w-20">Vista</th>
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm min-w-[120px]">Nombre</th>
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm w-20 sm:w-24">Tamaño</th>
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm w-18 sm:w-20 hidden sm:table-cell">Calidad</th>
+              <th class="text-left p-2 sm:p-4 font-medium text-xs sm:text-sm w-16 sm:w-20">Acciones</th>
             </tr>
           </thead>
           <tbody id="images-tbody" class="divide-y">

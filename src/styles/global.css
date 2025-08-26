@@ -118,3 +118,60 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Utilidades responsive adicionales */
+@layer utilities {
+  /* Breakpoint xs para pantallas muy pequeñas */
+  @media (min-width: 475px) {
+    .xs\:block { display: block; }
+    .xs\:hidden { display: none; }
+    .xs\:inline { display: inline; }
+    .xs\:flex { display: flex; }
+    .xs\:flex-row { flex-direction: row; }
+    .xs\:space-y-0 > * + * { margin-top: 0; }
+    .xs\:space-x-2 > * + * { margin-left: 0.5rem; }
+  }
+  
+  /* Mejoras para modo oscuro */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* Scrollbar personalizado para modo oscuro */
+  .dark ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .dark ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+  
+  /* Animaciones suaves para transiciones de tema */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Mejoras para elementos interactivos en móvil */
+  @media (hover: none) and (pointer: coarse) {
+    .hover\:scale-105:hover {
+      transform: none;
+    }
+    
+    button, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+}

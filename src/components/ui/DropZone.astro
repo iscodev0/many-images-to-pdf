@@ -6,9 +6,10 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
+<!-- DropZone responsive con mejores tamaños para móvil -->
 <div 
   class:list={[
-    'border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center hover:border-primary/50 transition-colors cursor-pointer bg-background/50 hover:bg-background/80',
+    'border-2 border-dashed border-muted-foreground/25 rounded-lg p-4 sm:p-6 lg:p-8 text-center hover:border-primary/50 transition-colors cursor-pointer bg-background/50 hover:bg-background/80',
     className
   ]}
   id="drop-zone"
@@ -21,15 +22,22 @@ const { class: className = '', ...props } = Astro.props;
     accept="image/*" 
     class="hidden"
   />
-  <div class="flex flex-col items-center justify-center space-y-4">
-    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-      <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div class="flex flex-col items-center justify-center space-y-3 sm:space-y-4">
+    <!-- Icono responsive -->
+    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center">
+      <svg class="w-5 h-5 sm:w-6 sm:h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
       </svg>
     </div>
-    <div class="space-y-2">
-      <p class="text-sm font-medium">Drop images here or click to browse</p>
-      <p class="text-xs text-muted-foreground">PNG, JPG, JPEG up to 10MB each</p>
+    <!-- Texto responsive -->
+    <div class="space-y-1 sm:space-y-2">
+      <p class="text-xs sm:text-sm font-medium">
+        <span class="block sm:inline">Arrastra imágenes aquí</span>
+        <span class="block sm:inline sm:ml-1">o toca para buscar</span>
+      </p>
+      <p class="text-xs text-muted-foreground">
+        PNG, JPG, JPEG hasta 10MB cada una
+      </p>
     </div>
   </div>
 </div>

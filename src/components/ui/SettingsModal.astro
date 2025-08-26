@@ -6,18 +6,21 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
+<!-- Modal responsive que se adapta a diferentes tamaños -->
 <div 
   id="settings-modal"
-  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
   {...props}
 >
-  <div class="bg-background rounded-xl border shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-    <div class="p-6 border-b">
+  <!-- Contenedor del modal responsive -->
+  <div class="bg-background rounded-xl border shadow-xl w-full max-w-sm sm:max-w-md lg:max-w-lg max-h-[90vh] overflow-y-auto">
+    <!-- Header responsive -->
+    <div class="p-4 sm:p-6 border-b">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold">PDF Settings</h2>
+        <h2 class="text-lg sm:text-xl font-semibold">Configuración PDF</h2>
         <button 
           id="close-settings"
-          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 sm:h-9 sm:w-9"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -26,10 +29,11 @@ const { class: className = '', ...props } = Astro.props;
       </div>
     </div>
     
-    <div class="p-6 space-y-6">
+    <!-- Contenido responsive -->
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <!-- Page Format -->
-      <div class="space-y-3">
-        <label class="text-sm font-medium">Page Format</label>
+      <div class="space-y-2 sm:space-y-3">
+        <label class="text-sm font-medium">Formato de Página</label>
         <select 
           id="page-format"
           class="w-full px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -37,7 +41,7 @@ const { class: className = '', ...props } = Astro.props;
           <option value="a4">A4 (210 × 297 mm)</option>
           <option value="letter">Letter (216 × 279 mm)</option>
           <option value="legal">Legal (216 × 356 mm)</option>
-          <option value="comic" selected>Comic Style (Custom)</option>
+          <option value="comic" selected>Estilo Cómic (Personalizado)</option>
         </select>
       </div>
 

@@ -11,40 +11,45 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
-<Card class="p-8">
-  <div class="space-y-6">
-    <h2 class="text-2xl font-semibold flex items-center space-x-2">
-      <Upload class="w-6 h-6 text-primary" />
-      <span>Add Images</span>
+<!-- Card responsive con padding adaptativo -->
+<Card class="p-4 sm:p-6 lg:p-8">
+  <div class="space-y-4 sm:space-y-6">
+    <!-- Título responsive -->
+    <h2 class="text-xl sm:text-2xl font-semibold flex items-center space-x-2">
+      <Upload class="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+      <span>Agregar Imágenes</span>
     </h2>
     
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Grid responsive que se apila en móvil -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
       <!-- File Upload -->
       <div class="space-y-4">
-        <h3 class="text-lg font-medium">Upload Files</h3>
+        <h3 class="text-base sm:text-lg font-medium">Subir Archivos</h3>
         <DropZone />
-        <p class="text-sm text-muted-foreground">
-          Supports: PNG, JPG, JPEG, WebP, GIF
+        <p class="text-xs sm:text-sm text-muted-foreground">
+          Soporta: PNG, JPG, JPEG, WebP, GIF
         </p>
       </div>
 
       <!-- URL Input -->
       <div class="space-y-4">
-        <h3 class="text-lg font-medium">Add from URL</h3>
-        <div class="flex space-x-2">
+        <h3 class="text-base sm:text-lg font-medium">Agregar desde URL</h3>
+        <!-- Input responsive que se apila en móvil muy pequeño -->
+        <div class="flex flex-col xs:flex-row space-y-2 xs:space-y-0 xs:space-x-2">
           <input
             type="url"
             id="url-input"
-            placeholder="https://example.com/image.jpg"
+            placeholder="https://ejemplo.com/imagen.jpg"
             class="flex-1 px-3 py-2 border border-input rounded-md bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           />
-          <Button id="add-url-btn" variant="outline" size="sm">
+          <Button id="add-url-btn" variant="outline" size="sm" class="flex-shrink-0">
             <Link class="w-4 h-4 mr-2" />
-            Add URL
+            <span class="hidden xs:inline">Agregar</span>
+            <span class="xs:hidden">URL</span>
           </Button>
         </div>
-        <p class="text-sm text-muted-foreground">
-          Paste a direct link to an image file
+        <p class="text-xs sm:text-sm text-muted-foreground">
+          Pega un enlace directo a un archivo de imagen
         </p>
       </div>
     </div>

@@ -9,21 +9,33 @@ interface Props {
 const { class: className = '', ...props } = Astro.props;
 ---
 
-<div class="flex flex-wrap gap-3 justify-center">
-  <Button id="settings-btn" variant="outline" size="lg" class="min-w-[120px]">
-    <Settings class="w-4 h-4 mr-2" />
-    Settings
+<!-- Botones responsive que se adaptan a diferentes tamaños -->
+<div class="flex flex-wrap gap-2 sm:gap-3 justify-center">
+  <!-- Configuración -->
+  <Button id="settings-btn" variant="outline" size="lg" class="flex-1 sm:flex-none min-w-[100px] sm:min-w-[120px]">
+    <Settings class="w-4 h-4 mr-1 sm:mr-2" />
+    <span class="hidden xs:inline">Configurar</span>
+    <span class="xs:hidden">Config</span>
   </Button>
-  <Button id="reverse-order-btn" variant="outline" size="lg" class="min-w-[140px]">
-    <RotateCcw class="w-4 h-4 mr-2" />
-    Reverse Order
+  
+  <!-- Orden reverso -->
+  <Button id="reverse-order-btn" variant="outline" size="lg" class="flex-1 sm:flex-none min-w-[100px] sm:min-w-[140px]">
+    <RotateCcw class="w-4 h-4 mr-1 sm:mr-2" />
+    <span class="hidden sm:inline">Invertir Orden</span>
+    <span class="sm:hidden">Invertir</span>
   </Button>
-  <Button id="clear-all-btn" variant="destructive" size="lg" class="min-w-[120px]">
-    <Trash2 class="w-4 h-4 mr-2" />
-    Clear All
+  
+  <!-- Limpiar todo -->
+  <Button id="clear-all-btn" variant="destructive" size="lg" class="flex-1 sm:flex-none min-w-[100px] sm:min-w-[120px]">
+    <Trash2 class="w-4 h-4 mr-1 sm:mr-2" />
+    <span class="hidden xs:inline">Limpiar</span>
+    <span class="xs:hidden">🗑️</span>
   </Button>
-  <Button id="download-pdf-btn" size="lg" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 min-w-[160px]">
-    <Download class="w-4 h-4 mr-2" />
-    Download PDF
+  
+  <!-- Generar PDF - botón principal más prominente -->
+  <Button id="download-pdf-btn" size="lg" class="flex-1 sm:flex-none bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 min-w-[120px] sm:min-w-[160px] order-first sm:order-last">
+    <Download class="w-4 h-4 mr-1 sm:mr-2" />
+    <span class="hidden sm:inline">Generar PDF</span>
+    <span class="sm:hidden">PDF</span>
   </Button>
 </div>

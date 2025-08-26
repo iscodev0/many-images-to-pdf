@@ -5,26 +5,46 @@ import ImageUploadSection from './ui/ImageUploadSection.astro';
 import ControlButtons from './ui/ControlButtons.astro';
 import ImagePreviewTable from './ui/ImagePreviewTable.astro';
 import SettingsModal from './ui/SettingsModal.astro';
+import ThemeToggle from './ui/ThemeToggle.astro';
 ---
 
-<div class="w-full max-w-7xl mx-auto p-6 space-y-8">
-  <!-- Header -->
-  <AppHeader />
-
-  <!-- Mini Tutorial Section -->
-  <TutorialSection />
-
-  <!-- Upload Section -->
-  <ImageUploadSection />
-
-  <!-- Controls -->
-  <ControlButtons />
-
-  <!-- Images Preview -->
-  <ImagePreviewTable />
+<!-- Contenedor principal responsive -->
+<div class="min-h-screen bg-background text-foreground transition-colors duration-200">
+  <!-- Toggle de tema -->
+  <ThemeToggle />
   
-  <!-- Settings Modal -->
-  <SettingsModal />
+  <!-- Contenedor con padding responsive -->
+  <div class="container mx-auto px-4 py-6 space-y-6 max-w-6xl sm:px-6 lg:px-8">
+    <!-- Header responsive -->
+    <div class="space-y-4">
+      <AppHeader />
+    </div>
+    
+    <!-- Tutorial colapsable en móvil -->
+    <div class="lg:block">
+      <TutorialSection />
+    </div>
+    
+    <!-- Sección de carga responsive -->
+    <div class="space-y-4">
+      <ImageUploadSection />
+    </div>
+    
+    <!-- Controles responsive -->
+    <div class="space-y-4">
+      <ControlButtons />
+    </div>
+    
+    <!-- Tabla responsive con scroll horizontal -->
+    <div class="space-y-4">
+      <div class="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <ImagePreviewTable />
+      </div>
+    </div>
+    
+    <!-- Modal de configuración -->
+    <SettingsModal />
+  </div>
 </div>
 
 <script>

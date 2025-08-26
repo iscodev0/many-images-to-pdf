@@ -1,12 +1,22 @@
-# 🐼 PandaScan Converter (Beta)
+# 🐼 PandaScan Converter (Beta) 
 
 **Transform images into professional PDFs instantly** - Perfect for comics, documents, and photo collections.
 
-*powered by iscodev *
+*powered by iscodev*
 
 ![Astro](https://img.shields.io/badge/astro-5.13.3-blue)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-4.1.12-blue)
 ![TypeScript](https://img.shields.io/badge/typescript-ready-green)
+![Mobile](https://img.shields.io/badge/mobile-optimized-green)
+![Dark Mode](https://img.shields.io/badge/dark%20mode-supported-purple)
+
+## ✨ New Features v2.0
+
+- 🌙 **Dark Mode Toggle** - Automatic system detection + manual toggle  
+- 📱 **Full Mobile Support** - Responsive design for all screen sizes
+- 🎨 **Adaptive UI** - Components that scale perfectly on any device
+- 🚀 **Touch Optimized** - Mobile-first interaction design
+- 🌐 **PWA Ready** - Progressive Web App capabilities
 
 ## ⚡ Quick Start
 
@@ -20,12 +30,14 @@
 ## 🎯 Core Features
 
 - 📁 **Multi-Upload**: Drag & drop files + URL support
-- � **Drag Reorder**: Change image order easily
+- 🔄 **Drag Reorder**: Change image order easily
 - 📏 **Smart Quality**: SD/HD with comic-optimized layouts
 - 🎨 **Professional Output**: A4, Letter, Legal, A3, Custom sizes
 - 🔒 **Watermark**: Branded PDFs (always included)
+- 🌙 **Dark/Light Mode**: System preference + manual toggle
+- 📱 **Mobile First**: Perfect experience on any device
 
-## �️ Tech Stack
+## 🛠️ Tech Stack
 
 **Framework**: Astro 5.13.3 • **UI**: Tailwind + shadcn/ui • **PDF**: jsPDF • **Images**: browser-image-compression
 
@@ -60,6 +72,30 @@ bun install && bun run dev
 - **Watermark**: Always enabled (PandaScan Converter)
 - **Image info**: Disabled by default
 - **Page numbers**: Enabled by default
+- **Theme**: Dark mode by default (follows system preference)
+
+## 📱 Mobile & Responsive Features
+
+### 🌙 Dark Mode
+- **Auto Detection**: Follows system preference automatically
+- **Manual Toggle**: Fixed button in top-right corner
+- **Smooth Transitions**: All elements animate between themes
+- **PWA Support**: Theme-color meta tag updates dynamically
+
+### 📱 Mobile Optimizations
+- **Touch Targets**: Minimum 44px for all interactive elements
+- **Responsive Grid**: Components stack appropriately on small screens
+- **Collapsible Tutorial**: Expandable on mobile to save space
+- **Scroll Tables**: Horizontal scroll for wide tables on mobile
+- **Adaptive Text**: Font sizes scale with screen size
+- **Mobile Gestures**: Touch-optimized drag & drop
+
+### 🎨 Responsive Breakpoints
+- **xs**: 475px+ (very small phones)
+- **sm**: 640px+ (small phones) 
+- **md**: 768px+ (tablets)
+- **lg**: 1024px+ (laptops)
+- **xl**: 1280px+ (desktops)
 
 ## 🔧 Error Handling
 

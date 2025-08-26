@@ -3,19 +3,38 @@ import "../styles/global.css";
 import ImageToPDFConverter from "../components/ImageToPDFConverter.astro";
 ---
 
-<html lang="en">
+<html lang="es" class="dark">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Meta viewport optimizado para móvil -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 		<meta name="generator" content={Astro.generator} />
-		<title>PandaScan Converter - Image to PDF</title>
-		<meta name="description" content="Transform images into professional PDFs with PandaScan Converter. Perfect for comics, documents, and collections." />
+		
+		<!-- Meta tags mejorados -->
+		<title>PandaScan Converter - Imágenes a PDF | Modo Cómic</title>
+		<meta name="description" content="Convierte imágenes a PDF profesional con estilo cómic. Modo oscuro, responsive, drag & drop. Gratis y rápido." />
+		<meta name="keywords" content="pdf, converter, comic, images, dark mode, responsive, mobile" />
+		
+		<!-- Meta theme-color para móviles (se actualizará dinámicamente) -->
+		<meta name="theme-color" content="#1a1a1a" />
+		
+		<!-- PWA básico -->
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		
+		<!-- Open Graph para redes sociales -->
+		<meta property="og:title" content="PandaScan Converter - Imágenes a PDF" />
+		<meta property="og:description" content="Convierte imágenes a PDF con estilo cómic. Modo oscuro y responsive." />
+		<meta property="og:type" content="website" />
+		
+		<!-- Scripts de anuncios -->
 		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8791487161063119"
      crossorigin="anonymous"></script>
 	</head>
-	<body class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-		<main class="container mx-auto py-8">
+	<body class="min-h-screen">
+		<main>
 			<ImageToPDFConverter />
 		</main>
 	</body>
